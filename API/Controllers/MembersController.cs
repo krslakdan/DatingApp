@@ -2,6 +2,7 @@
 using API.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
@@ -10,9 +11,19 @@ namespace API.Controllers
     public class MembersController(AppDbContext db) : ControllerBase
     {
         [HttpGet]
-        public ActionResult<List<AppUser>> GetMembers()
+        public async Task<ActionResult<IReadOnlyList<AppUser>>> GetMembers()
         {
+            var members = await db.Users.ToListAsync();
+            return members;
+        }
 
+        [HttpGet("{id}")]
+        public async Task<ActionResult<AppUser>> GetMember(string id)
+        {
+            var member = await db.Users.FirstOrDefaultAsync(x => x.Id == id);
+            if (member == null)
+                return NotFound();
+            return member;
         }
     }
 }
