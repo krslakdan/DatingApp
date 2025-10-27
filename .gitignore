@@ -47,6 +47,8 @@ bld/
 [Ll]og/
 [Ll]ogs/
 
+.vscode/
+
 appsettings.Development.json
 appsettings.devel.json
 
